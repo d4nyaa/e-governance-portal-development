@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -115,6 +115,17 @@ export default function SchemesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedStatus, setSelectedStatus] = useState("All")
   const [activeTab, setActiveTab] = useState("all")
+
+  const formatDate = useMemo(() => {
+    return (dateString: string) => {
+      const date = new Date(dateString)
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    }
+  }, [])
 
   const filteredSchemes = schemes.filter((scheme) => {
     const matchesSearch =
@@ -242,7 +253,7 @@ export default function SchemesPage() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-4 w-4" />
-                  <span>Deadline: {new Date(scheme.deadline).toLocaleDateString()}</span>
+                  <span>Deadline: {formatDate(scheme.deadline)}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4" />
